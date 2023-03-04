@@ -1,0 +1,6 @@
+// generate 4-digit number
+    // read 4-digit number from user
+    // while-loop -> continue as long as guess is not right
+    // innerhalb while:
+        // check how many right numbers are in the guess
+        // if right number are in the guess, check how many right guesses are at the right place
