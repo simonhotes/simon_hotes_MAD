@@ -1,32 +1,45 @@
-
+/*
+* TODO Possible Improvements
+*   TODO 1: Display already guessed combinations
+*   TODO 2: Quit game with GAME OVER message after x wrong guesses
+*   TODO 3: Display guesses left before game over
+*   TODO 4: Refactoring:
+*       TODO 4.1: Get rid of for-loops in calculateN and calculateM by replacing it with lambda expressions
+*       TODO 4.2: Simplify println(s)
+*   TODO 5: Check input (just Ints, etc.)
+* */
 
 fun main( ) {
-    var rightGuess: Boolean = false
+    var endGame = false
     val numberToGuess = generateRandomNumberToGuess().toList()
-    println(numberToGuess)
+    printHowToPlay()
     var nextGuess = readNextGuess()
-    println(nextGuess)
+
 
     if(nextGuess == numberToGuess) {
         println()
         println("Congrats")
         println()
-        rightGuess = true
+        endGame = true
     }
 
-    while(!rightGuess) {
+    while(!endGame) {
         var n = calculateN(numberToGuess, nextGuess)
         var m = calculateM(numberToGuess, nextGuess)
         println()
         println("$n : $m")
+        println("---------------------------------------------------------")
         println()
         if(nextGuess == numberToGuess) {
             println()
-            println("Congrats")
+            println("Congratulation, you correctly guessed $numberToGuess")
             println()
-            rightGuess = true
+            endGame = true
         }
-        nextGuess = readNextGuess()
+
+        if(!endGame) {
+            nextGuess = readNextGuess()
+        }
     }
 }
 
@@ -69,15 +82,26 @@ fun generateRandomNumberToGuess() : MutableList<Int> {
 
 fun readNextGuess(): List<Int> {
     // Read number standard interface
-    println()
-    println("Enter 4-digit number separates by spaces and hit enter: ")
+    println("Enter 4-digit number and hit enter: ")
     var input = readlnOrNull()
-    while (input?.length != 7) { // TODO -> improvement: check if input just contains int
+    while (input?.length != 4) {
         println("Bro pleeeease, enter a  4-digit number: ")
         input = readlnOrNull()
     }
-    println()
 
-    var inputList = input.split(' ')
+    var inputList = input.chunked(1)
     return inputList.map { it.toInt() }
+}
+
+fun printHowToPlay() {
+    println("Guessing Game: Find the right 4-digit number!\n" +
+            "Enter the number and see the result as n : m,\n" +
+            "where is the number of digits guessed correctly regardless of their position,\n" +
+            "and m is the number of digits guessed correctly at their correct position.\n" +
+            "Here are some examples:\n" +
+            "Generated number: 8576 (there are no repeating digits in the number)\n" +
+            "•\tUser input: 1234, Output: 0:0\n" +
+            "•\tUser input: 5678, Output: 4:1\n" +
+            "•\tUser input: 5555, Output: 1:1\n" +
+            "•\tUser input: 3586, Output: 3:2\n")
 }
